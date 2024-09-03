@@ -11,37 +11,19 @@ body a {
   -ms-transition: 0.5s all;
 }
 .banner {
+	
+	background-image: url('../images/old one/Village hill .jpeg'),url('../slideshow/Village Houses.jpeg'),url('../slideshow/paddy.jpg');
+	background-repeat: no-repeat, repeat; /* Specify the repeat behavior for each image */
+	background-position: center top, left bottom; /* Set the position for each image */
+	background-size: cover; /* Adjust the size of the background images */
+	min-height: 855px;
 	position: relative;
-	overflow: hidden; /* Ensures no overflow from video or image */
-	min-height: 855px; /* Adjust according to your design */
+	transition: background-image 2s ease-in-out;
   }
-  
-  .banner-video {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	min-width: 100%;
-	min-height: 100%;
-	width: auto;
-	height: auto;
-	z-index: 0;
-	transform: translate(-50%, -50%);
-	object-fit: cover; /* Ensures the video covers the entire element */
-	pointer-events: none; /* Ensures the video does not interfere with other interactions */
-  }
-  
-  .banner-image {
-	position: absolute;
-	top: 20px; /* Adjust position as needed */
-	left: 20px; /* Adjust position as needed */
-	width: 100px; /* Adjust size as needed */
-	height: auto; /* Maintain aspect ratio */
-	z-index: 1; /* Ensures the image appears above the video */
-  }
-  
-  .banner .container {
-	position: relative;
-	z-index: 2; /* Places content above both the video and image */
+  .banner:hover {
+	/* Replace 'image3.jpg' and 'image4.jpg' with other image URLs for hover effect */
+	background-image: url(''), url('../slideshow/Village Houses.jpeg'),url('../slideshow/paddy.jpg');
+	animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 .button {
 	border: none;
