@@ -34,12 +34,39 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script>
 	 new WOW().init();
 </script>
+<style>
+        .scrolling-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #ffcc00; /* Background color for the message */
+            color: #000; /* Text color */
+            text-align: center;
+            padding: 10px 0;
+            box-sizing: border-box;
+            font-size: 1.2em;
+            z-index: 1000; /* Ensure it's on top of other elements */
+            animation: scroll-down 10s linear infinite;
+        }
+
+        @keyframes scroll-down {
+            0% {
+                top: -100%;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 	<!-- banner -->
 	<div class="banner">
 		 <!-- Add the video element here -->
-		
+		<div class="scrolling-message">
+                        బాలు నాయక్ తాండకు స్వాగతం! తాజా అప్డేట్స్ మరియు ప్రకటనల కోసం మిమ్మల్ని తాజా ఉంచండి!
+                </div>
 		<!-- container -->
 		<div class="container">
 			<div class="header">
