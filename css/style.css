@@ -116,6 +116,47 @@ body a {
 .top-nav ul li a:hover{
 	text-decoration:none;
 }
+.pillars-of-village {
+    padding: 50px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.subsection {
+    margin-bottom: 40px;
+}
+
+.subsection h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.round-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+}
+
+.leader, .youth {
+    text-align: center;
+}
+
+.leader p, .youth p {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 /* Sweep To Bottom */
 .hvr-sweep-to-bottom {
   display: inline-block;
