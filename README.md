@@ -1,5 +1,5 @@
-# AmudalaKunta
+# Balu Naik Thanda
 
 Simple Website 
 
-https://laxman824.github.io/AmudalaKunta/
+
