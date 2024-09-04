@@ -14,8 +14,8 @@ wss.on('connection', ws => {
         // You would replace this with actual data fetching from your database
         const donorData = JSON.stringify({
             donors: [
-                { name: "Guguloth Praveen", amount: **** },
-                { name: "Guguloth Vijaya", amount: *** },
+                { name: "Guguloth Praveen", amount: 5000 },
+                { name: "Guguloth Vijaya", amount: 3000 },
                 { name: "unknown person", amount: 500 }
             ]
         });
