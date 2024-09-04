@@ -16,7 +16,7 @@ wss.on('connection', ws => {
             donors: [
                 { name: "Guguloth Praveen", amount: 5000 },
                 { name: "Guguloth Vijaya", amount: 3000 },
-                { name: "unknown person", amount: 500 }
+                { name: "unknown person", amount: 200 }
             ]
         });
         ws.send(donorData);
