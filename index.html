@@ -229,6 +229,60 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<!-- //container -->
 	</div>
 	<!-- //banner-bottom -->
+	<!-- Upload Section -->
+<div class="upload-section">
+    <h2>Upload Files</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput" multiple accept="image/*, video/*">
+        <button type="submit">Upload</button>
+    </form>
+</div>
+
+<!-- Gallery Section -->
+<div class="gallery-section">
+    <h2>Gallery</h2>
+    <div id="gallery"></div>
+</div>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = new FormData();
+        const files = document.getElementById('fileInput').files;
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files[]', files[i]);
+        }
+
+        const response = await fetch('https://your-flask-backend.com/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            loadGallery();
+        } else {
+            alert('File upload failed.');
+        }
+    });
+
+    async function loadGallery() {
+        const response = await fetch('https://your-flask-backend.com/gallery');
+        const files = await response.json();
+        const gallery = document.getElementById('gallery');
+        gallery.innerHTML = '';
+
+        files.forEach(file => {
+            const fileElement = file.type === 'image' ?
+                `<img src="${file.url}" alt="${file.name}">` :
+                `<video src="${file.url}" controls></video>`;
+            gallery.innerHTML += fileElement;
+        });
+    }
+
+    // Load gallery on page load
+    loadGallery();
+</script>
+
 	<!-- Pillars of the Village Section -->
 <div class="pillars-of-village">
     <div class="container">
