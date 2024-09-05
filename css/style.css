@@ -228,6 +228,68 @@ body a {
 	margin: 1em 0 0 0;
 	line-height: 1.8em;
 }
+/* Entertainment Section Styling */
+.entertainment-section {
+    text-align: center;
+    margin: 50px 0;
+    background-color: #f0f2f5; /* Facebook-like background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.entertainment-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #1877f2; /* Facebook Blue */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.entertainment-subtags {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.entertainment-tag {
+    flex: 1;
+    max-width: 200px;
+}
+
+.entertainment-btn {
+    display: inline-block;
+    font-size: 18px;
+    padding: 15px 30px;
+    background-color: #1877f2; /* Facebook Blue */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.entertainment-btn:hover {
+    background-color: #165dbb; /* Darker Facebook Blue */
+    text-decoration: none;
+    color: #fff;
+}
+
+.entertainment-btn i {
+    font-size: 24px;
+}
+
 /*-- banner-bottom --*/
 .banner-bottom{
 	
