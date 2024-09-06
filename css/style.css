@@ -12,9 +12,9 @@ body a {
 }
 .banner {
 	background-image: url('../images/naatu.jpeg'), url('../slideshow/Village Houses.jpeg'), url('../slideshow/paddy.jpg');
-	background-repeat: no-repeat, repeat, repeat; /* Make sure the images you want to repeat are set here */
-	background-position: center top, left bottom, center center;
-	background-size: cover, auto, auto; /* Adjust size according to need */
+	background-repeat: no-repeat, repeat, repeat; /* Adjust the repeat behavior for each image */
+	background-position: center center, center center, center center; /* Center the images */
+	background-size: cover, contain, contain; /* Adjust the size of each image */
 	min-height: 855px;
 	position: relative;
 	transition: background-image 2s ease-in-out;
@@ -23,6 +23,7 @@ body a {
 .banner:hover {
 	background-image: url('../images/hover-image.jpeg'), url('../slideshow/Village Houses.jpeg'), url('../slideshow/paddy.jpg');
 	background-repeat: no-repeat, repeat, repeat; /* Ensure repeat settings are consistent on hover */
+	background-size: cover, contain, contain; /* Adjust sizes accordingly */
 }
 
   }
