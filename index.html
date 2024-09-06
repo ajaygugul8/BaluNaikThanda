@@ -59,6 +59,25 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             }
         }
     </style>
+	<script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js"></script>
+
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAkRB-AkiV9KC8ZdsgqODGl5BMqCWW5cKk",
+    authDomain: "balunaikthandafiles.firebaseapp.com",
+    projectId: "balunaikthandafiles",
+    storageBucket: "balunaikthandafiles.appspot.com",
+    messagingSenderId: "425213531872",
+    appId: "1:425213531872:web:74ac86ce7d97b058006285",
+    measurementId: "G-WPWN8QWFL4"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
 </head>
 <body>
 	<!-- banner -->
@@ -248,58 +267,77 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 <!-- Upload Section -->
-<div class="upload-section">
-    <h2>Upload Files</h2>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="file" id="fileInput" multiple accept="image/*, video/*">
-        <button type="submit">Upload</button>
-    </form>
-</div>
+<h2>Upload Festival Videos and Photos</h2>
+<form id="uploadForm">
+  <label for="fileInput">Select a file to upload:</label>
+  <input type="file" id="fileInput" accept="image/*,video/*" />
+  <button type="submit">Upload</button>
+</form>
+<p id="uploadStatus"></p>
 
-<!-- Gallery Section -->
-<div class="gallery-section">
-    <h2>Gallery</h2>
-    <div id="gallery"></div>
+<div id="uploadedFiles">
+  <h3>Uploaded Files:</h3>
 </div>
-
 <script>
-    document.getElementById('uploadForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const formData = new FormData();
-        const files = document.getElementById('fileInput').files;
-        for (let i = 0; i < files.length; i++) {
-            formData.append('files[]', files[i]);
-        }
+  const uploadForm = document.getElementById('uploadForm');
+  const fileInput = document.getElementById('fileInput');
+  const uploadStatus = document.getElementById('uploadStatus');
+  const uploadedFilesDiv = document.getElementById('uploadedFiles');
 
-        const response = await fetch('https://your-flask-backend.com/upload', {
-            method: 'POST',
-            body: formData
-        });
-
-        if (response.ok) {
-            loadGallery();
-        } else {
-            alert('File upload failed.');
-        }
-    });
-
-    async function loadGallery() {
-        const response = await fetch('https://your-flask-backend.com/gallery');
-        const files = await response.json();
-        const gallery = document.getElementById('gallery');
-        gallery.innerHTML = '';
-
-        files.forEach(file => {
-            const fileElement = file.type === 'image' ?
-                `<img src="${file.url}" alt="${file.name}">` :
-                `<video src="${file.url}" controls></video>`;
-            gallery.innerHTML += fileElement;
-        });
+  // Handle the file upload form submission
+  uploadForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const file = fileInput.files[0];
+    if (file) {
+      uploadFile(file);
     }
+  });
 
-    // Load gallery on page load
-    loadGallery();
+  // Function to upload the file to Firebase Storage
+  function uploadFile(file) {
+    const storageRef = firebase.storage().ref('uploads/' + file.name);
+    const uploadTask = storageRef.put(file);
+
+    // Monitor the upload progress
+    uploadTask.on('state_changed',
+      function (snapshot) {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        uploadStatus.innerHTML = 'Upload is ' + progress.toFixed(0) + '% done';
+      },
+      function (error) {
+        uploadStatus.innerHTML = 'Error: ' + error.message;
+      },
+      function () {
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          uploadStatus.innerHTML = 'File uploaded successfully!';
+          displayUploadedFile(downloadURL);
+        });
+      }
+    );
+  }
+
+  // Function to display the uploaded file in the "Uploaded Files" section
+  function displayUploadedFile(url) {
+    const fileElement = document.createElement('a');
+    fileElement.href = url;
+    fileElement.target = '_blank';
+    fileElement.textContent = 'View uploaded file';
+    uploadedFilesDiv.appendChild(fileElement);
+  }
+
+  // Fetch and display existing uploaded files on page load
+  window.onload = function() {
+    const storageRef = firebase.storage().ref('uploads/');
+    storageRef.listAll().then(function(result) {
+      result.items.forEach(function(fileRef) {
+        fileRef.getDownloadURL().then(function(url) {
+          displayUploadedFile(url);
+        });
+      });
+    });
+  };
 </script>
+
 	<!-- Pillars of the Village Section -->
 <div class="pillars-of-village">
     <div class="container">
