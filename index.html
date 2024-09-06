@@ -59,11 +59,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             }
         }
     </style>
-	<script type="module" src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
-<script type="module" src="https://www.gstatic.com/firebasejs/9.10.0/firebase-storage.js"></script>
+	<!-- Firebase App (non-module) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+<!-- Firebase Storage -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
 <script>
-  // Firebase configuration
+  // Firebase configuration (Ensure this is in the correct place)
   const firebaseConfig = {
     apiKey: "AIzaSyAkRB-AkiV9KC8ZdsgqODGl5BMqCWW5cKk",
     authDomain: "balunaikthandafiles.firebaseapp.com",
@@ -74,7 +77,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     measurementId: "G-WPWN8QWFL4"
   };
 
-  // Initialize Firebase
+  // Initialize Firebase (Make sure this is executed before any Firebase functions)
   firebase.initializeApp(firebaseConfig);
 </script>
 
@@ -267,6 +270,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 <!-- Upload Section -->
+<!-- Upload Section -->
 <h2>Upload Festival Videos and Photos</h2>
 <form id="uploadForm">
   <label for="fileInput">Select a file to upload:</label>
@@ -278,6 +282,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div id="uploadedFiles">
   <h3>Uploaded Files:</h3>
 </div>
+
 <script>
   const uploadForm = document.getElementById('uploadForm');
   const fileInput = document.getElementById('fileInput');
