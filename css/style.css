@@ -314,6 +314,69 @@ body a {
     object-fit: cover; /* Ensures the video fills the container */
     border: none;
 }
+/* Upload Section Styling */
+.upload-section {
+    text-align: center;
+    margin: 50px 0;
+    background-color: #f8f9fa; /* Light grey background */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.upload-section h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #1877f2; /* Facebook Blue */
+}
+
+.upload-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #333;
+}
+
+.upload-section input[type="file"] {
+    margin-bottom: 20px;
+}
+
+.upload-section button {
+    font-size: 18px;
+    padding: 15px 30px;
+    background-color: #1877f2; /* Facebook Blue */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.upload-section button:hover {
+    background-color: #165dbb; /* Darker Facebook Blue */
+}
+
+.upload-status {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.uploaded-files {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.uploaded-files h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
 
 
 
