@@ -12,7 +12,7 @@ body a {
 }
 .banner {
 	
-	background-image: url('../images/old one/Village hill .jpeg'),url('../slideshow/Village Houses.jpeg'),url('../slideshow/paddy.jpg');
+	background-image: url('../images/naatu.jpeg'),url('../slideshow/Village Houses.jpeg'),url('../slideshow/paddy.jpg');
 	background-repeat: no-repeat, repeat; /* Specify the repeat behavior for each image */
 	background-position: center top, left bottom; /* Set the position for each image */
 	background-size: cover; /* Adjust the size of the background images */
