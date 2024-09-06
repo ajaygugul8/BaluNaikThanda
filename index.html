@@ -270,18 +270,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 <!-- Upload Section -->
-<!-- Upload Section -->
-<h2>Upload Festival Videos and Photos</h2>
-<form id="uploadForm">
-  <label for="fileInput">Select a file to upload:</label>
-  <input type="file" id="fileInput" accept="image/*,video/*" />
-  <button type="submit">Upload</button>
-</form>
-<p id="uploadStatus"></p>
 
-<div id="uploadedFiles">
-  <h3>Uploaded Files:</h3>
+<div class="upload-section">
+    <h2>Upload Festival Videos and Photos</h2>
+    <form id="uploadForm">
+        <label for="fileInput">Select a file to upload:</label>
+        <input type="file" id="fileInput" accept="image/*,video/*" />
+        <button type="submit">Upload</button>
+    </form>
+    <p class="upload-status" id="uploadStatus"></p>
+
+    <div class="uploaded-files" id="uploadedFiles">
+        <h3>Uploaded Files:</h3>
+    </div>
 </div>
+
 
 <script>
   const uploadForm = document.getElementById('uploadForm');
