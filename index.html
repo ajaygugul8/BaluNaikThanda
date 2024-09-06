@@ -288,13 +288,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   uploadForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const file = fileInput.files[0];
+    console.log("File selected:", file);  // Debug: Check if file is selected
     if (file) {
       uploadFile(file);
+    } else {
+      console.log("No file selected");  // Debug: No file selected
+      uploadStatus.innerHTML = "No file selected!";
     }
   });
 
   // Function to upload the file to Firebase Storage
   function uploadFile(file) {
+    console.log("Uploading file:", file.name);  // Debug: Before upload
     const storageRef = firebase.storage().ref('uploads/' + file.name);
     const uploadTask = storageRef.put(file);
 
@@ -302,13 +307,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     uploadTask.on('state_changed',
       function (snapshot) {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload progress:", progress);  // Debug: Show progress
         uploadStatus.innerHTML = 'Upload is ' + progress.toFixed(0) + '% done';
       },
       function (error) {
+        console.log("Upload error:", error);  // Debug: Log error
         uploadStatus.innerHTML = 'Error: ' + error.message;
       },
       function () {
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          console.log("File available at:", downloadURL);  // Debug: After successful upload
           uploadStatus.innerHTML = 'File uploaded successfully!';
           displayUploadedFile(downloadURL);
         });
@@ -337,6 +345,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     });
   };
 </script>
+
 
 	<!-- Pillars of the Village Section -->
 <div class="pillars-of-village">
