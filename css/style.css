@@ -23,6 +23,7 @@ body a {
 .banner:hover {
 	background-image: url('../images/hover-image.jpeg'), url('../slideshow/Village Houses.jpeg'), url('../slideshow/paddy.jpg');
 	background-repeat: no-repeat, repeat, repeat; /* Ensure repeat settings are consistent on hover */
+	animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
   }
