@@ -1,10 +1,9 @@
-<!-- pictures.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pictures</title>
+    <title>Uploaded Pictures</title>
 </head>
 <body>
     <h2>Uploaded Pictures</h2>
@@ -13,6 +12,7 @@
     <script>
         window.onload = function() {
             const picturesSection = document.getElementById('picturesSection');
+            console.log("Fetching pictures from Firebase...");
 
             // Fetch and display pictures from Firebase Storage
             const storageRef = firebase.storage().ref('uploads/');
@@ -20,16 +20,26 @@
                 result.items.forEach(function(fileRef) {
                     fileRef.getDownloadURL().then(function(url) {
                         fileRef.getMetadata().then(function(metadata) {
+                            console.log("File found:", metadata.contentType);
+
                             if (metadata.contentType.startsWith('image/')) {
+                                console.log("Displaying image:", url);
+
                                 const imgElement = document.createElement('img');
                                 imgElement.src = url;
                                 imgElement.alt = "Uploaded Image";
-                                imgElement.style.width = "150px"; // Adjust size
+                                imgElement.style.width = "150px"; // Adjust size as needed
                                 picturesSection.appendChild(imgElement);
                             }
+                        }).catch(function(error) {
+                            console.error("Error fetching metadata:", error);  // Log any metadata errors
                         });
+                    }).catch(function(error) {
+                        console.error("Error getting download URL:", error);  // Log any URL errors
                     });
                 });
+            }).catch(function(error) {
+                console.error("Error listing files:", error);  // Log any listAll errors
             });
         };
     </script>
