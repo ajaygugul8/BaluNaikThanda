@@ -287,32 +287,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <button type="submit">Upload</button>
     </form>
     <p class="upload-status" id="uploadStatus"></p>
-
-    <div class="uploaded-files" id="uploadedFiles">
-        <h3>Uploaded Files:</h3>
-        
-        <!-- Pictures Section -->
-        <div id="picturesSection">
-            <h4>Pictures:</h4>
-        </div>
-        
-        <!-- Videos Section -->
-        <div id="videosSection">
-            <h4>Videos:</h4>
-        </div>
-    </div>
 </div>
-
-
 
 <script>
   const uploadForm = document.getElementById('uploadForm');
   const fileInput = document.getElementById('fileInput');
   const uploadStatus = document.getElementById('uploadStatus');
-
-  // Get sections for pictures and videos
-  const picturesSection = document.getElementById('picturesSection');
-  const videosSection = document.getElementById('videosSection');
 
   // Handle the file upload form submission
   uploadForm.addEventListener('submit', (e) => {
@@ -341,45 +321,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       function() {
         uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
           uploadStatus.innerHTML = 'File uploaded successfully!';
-          displayUploadedFile(downloadURL, file.type);
+          // We don't need to display the file here, as it will be fetched in the respective sections
         });
       }
     );
   }
-
-  // Function to display the uploaded file in the appropriate section
-  function displayUploadedFile(url, fileType) {
-    if (fileType.startsWith('image/')) {
-      // If the file is an image, append it to the Pictures section
-      const imgElement = document.createElement('img');
-      imgElement.src = url;
-      imgElement.alt = "Uploaded Image";
-      imgElement.style.width = "150px"; // Adjust size as needed
-      picturesSection.appendChild(imgElement);
-    } else if (fileType.startsWith('video/')) {
-      // If the file is a video, append it to the Videos section
-      const videoElement = document.createElement('video');
-      videoElement.src = url;
-      videoElement.controls = true;
-      videoElement.style.width = "300px"; // Adjust size as needed
-      videosSection.appendChild(videoElement);
-    }
-  }
-
-  // Fetch and display existing uploaded files on page load
-  window.onload = function() {
-    const storageRef = firebase.storage().ref('uploads/');
-    storageRef.listAll().then(function(result) {
-      result.items.forEach(function(fileRef) {
-        fileRef.getDownloadURL().then(function(url) {
-          fileRef.getMetadata().then(function(metadata) {
-            displayUploadedFile(url, metadata.contentType);
-          });
-        });
-      });
-    });
-  };
 </script>
+
 
 
 
