@@ -1,18 +1,38 @@
-<!-- videos.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Videos</title>
+    <title>Uploaded Videos</title>
+    <!-- Firebase App (non-module) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkRB-AkiV9KC8ZdsgqODGl5BMqCWW5cKk",
+            authDomain: "balunaikthandafiles.firebaseapp.com",
+            projectId: "balunaikthandafiles",
+            storageBucket: "balunaikthandafiles.appspot.com",
+            messagingSenderId: "425213531872",
+            appId: "1:425213531872:web:74ac86ce7d97b058006285",
+            measurementId: "G-WPWN8QWFL4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     <h2>Uploaded Videos</h2>
     <div id="videosSection"></div>
 
     <script>
-        window.onload = function() {
+        // Function to fetch and display videos
+        function displayVideos() {
             const videosSection = document.getElementById('videosSection');
+            console.log("Fetching videos from Firebase...");
 
             // Fetch and display videos from Firebase Storage
             const storageRef = firebase.storage().ref('uploads/');
@@ -20,18 +40,32 @@
                 result.items.forEach(function(fileRef) {
                     fileRef.getDownloadURL().then(function(url) {
                         fileRef.getMetadata().then(function(metadata) {
+                            console.log("File found:", metadata.contentType);
+
                             if (metadata.contentType.startsWith('video/')) {
+                                console.log("Displaying video:", url);
+
                                 const videoElement = document.createElement('video');
                                 videoElement.src = url;
-                                videoElement.controls = true;
-                                videoElement.style.width = "300px"; // Adjust size
+                                videoElement.controls = true; // Add video controls
+                                videoElement.style.width = "300px"; // Adjust size as needed
+                                videoElement.style.marginBottom = "10px"; // Add space between videos
                                 videosSection.appendChild(videoElement);
                             }
+                        }).catch(function(error) {
+                            console.error("Error fetching metadata:", error);  // Log any metadata errors
                         });
+                    }).catch(function(error) {
+                        console.error("Error getting download URL:", error);  // Log any URL errors
                     });
                 });
+            }).catch(function(error) {
+                console.error("Error listing files:", error);  // Log any listAll errors
             });
-        };
+        }
+
+        // Load videos when the page is fully loaded
+        window.onload = displayVideos;
     </script>
 </body>
 </html>
