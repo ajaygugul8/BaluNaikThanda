@@ -289,63 +289,80 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
     <div class="uploaded-files" id="uploadedFiles">
         <h3>Uploaded Files:</h3>
+        
+        <!-- Pictures Section -->
+        <div id="picturesSection">
+            <h4>Pictures:</h4>
+        </div>
+        
+        <!-- Videos Section -->
+        <div id="videosSection">
+            <h4>Videos:</h4>
+        </div>
     </div>
 </div>
+
 
 
 <script>
   const uploadForm = document.getElementById('uploadForm');
   const fileInput = document.getElementById('fileInput');
   const uploadStatus = document.getElementById('uploadStatus');
-  const uploadedFilesDiv = document.getElementById('uploadedFiles');
+
+  // Get sections for pictures and videos
+  const picturesSection = document.getElementById('picturesSection');
+  const videosSection = document.getElementById('videosSection');
 
   // Handle the file upload form submission
   uploadForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const file = fileInput.files[0];
-    console.log("File selected:", file);  // Debug: Check if file is selected
     if (file) {
       uploadFile(file);
     } else {
-      console.log("No file selected");  // Debug: No file selected
       uploadStatus.innerHTML = "No file selected!";
     }
   });
 
   // Function to upload the file to Firebase Storage
   function uploadFile(file) {
-    console.log("Uploading file:", file.name);  // Debug: Before upload
     const storageRef = firebase.storage().ref('uploads/' + file.name);
     const uploadTask = storageRef.put(file);
 
-    // Monitor the upload progress
     uploadTask.on('state_changed',
-      function (snapshot) {
+      function(snapshot) {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload progress:", progress);  // Debug: Show progress
         uploadStatus.innerHTML = 'Upload is ' + progress.toFixed(0) + '% done';
       },
-      function (error) {
-        console.log("Upload error:", error);  // Debug: Log error
+      function(error) {
         uploadStatus.innerHTML = 'Error: ' + error.message;
       },
-      function () {
-        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-          console.log("File available at:", downloadURL);  // Debug: After successful upload
+      function() {
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
           uploadStatus.innerHTML = 'File uploaded successfully!';
-          displayUploadedFile(downloadURL);
+          displayUploadedFile(downloadURL, file.type);
         });
       }
     );
   }
 
-  // Function to display the uploaded file in the "Uploaded Files" section
-  function displayUploadedFile(url) {
-    const fileElement = document.createElement('a');
-    fileElement.href = url;
-    fileElement.target = '_blank';
-    fileElement.textContent = 'View uploaded file';
-    uploadedFilesDiv.appendChild(fileElement);
+  // Function to display the uploaded file in the appropriate section
+  function displayUploadedFile(url, fileType) {
+    if (fileType.startsWith('image/')) {
+      // If the file is an image, append it to the Pictures section
+      const imgElement = document.createElement('img');
+      imgElement.src = url;
+      imgElement.alt = "Uploaded Image";
+      imgElement.style.width = "150px"; // Adjust size as needed
+      picturesSection.appendChild(imgElement);
+    } else if (fileType.startsWith('video/')) {
+      // If the file is a video, append it to the Videos section
+      const videoElement = document.createElement('video');
+      videoElement.src = url;
+      videoElement.controls = true;
+      videoElement.style.width = "300px"; // Adjust size as needed
+      videosSection.appendChild(videoElement);
+    }
   }
 
   // Fetch and display existing uploaded files on page load
@@ -354,12 +371,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     storageRef.listAll().then(function(result) {
       result.items.forEach(function(fileRef) {
         fileRef.getDownloadURL().then(function(url) {
-          displayUploadedFile(url);
+          fileRef.getMetadata().then(function(metadata) {
+            displayUploadedFile(url, metadata.contentType);
+          });
         });
       });
     });
   };
 </script>
+
 
 
 	<!-- Pillars of the Village Section -->
