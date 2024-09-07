@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uploaded Pictures</title>
+    <!-- Firebase App (non-module) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <!-- Firebase Storage -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkRB-AkiV9KC8ZdsgqODGl5BMqCWW5cKk",
+            authDomain: "balunaikthandafiles.firebaseapp.com",
+            projectId: "balunaikthandafiles",
+            storageBucket: "balunaikthandafiles.appspot.com",
+            messagingSenderId: "425213531872",
+            appId: "1:425213531872:web:74ac86ce7d97b058006285",
+            measurementId: "G-WPWN8QWFL4"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
 </head>
 <body>
     <h2>Uploaded Pictures</h2>
