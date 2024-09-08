@@ -86,7 +86,6 @@
                 hideLoadingSpinner();
                 result.items.forEach(function(fileRef) {
                     fileRef.getDownloadURL().then(function(url) {
-                        console.log("Image URL: ", url);  // Logs the image URL
                         fileRef.getMetadata().then(function(metadata) {
                             if (metadata.contentType.startsWith('image/')) {
                                 const imgElement = document.createElement('img');
@@ -103,7 +102,8 @@
                     });
                 });
 
-                lazyLoadImages();  // Ensure lazy loading
+                // Lazy load the images after they've been appended
+                lazyLoadImages();
             }).catch(function(error) {
                 hideLoadingSpinner();
                 console.error("Error listing files:", error);
