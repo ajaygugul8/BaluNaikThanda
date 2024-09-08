@@ -77,31 +77,36 @@
 
         // Function to fetch and display videos
         function displayVideos() {
-            const videosSection = document.getElementById('videosSection');
-            showLoadingSpinner();
+    const videosSection = document.getElementById('videosSection');
+    showLoadingSpinner();
 
-            // Fetch and display videos from Firebase Storage
-            const storageRef = firebase.storage().ref('uploads/');
-            storageRef.listAll().then(function(result) {
-                hideLoadingSpinner();
-                result.items.forEach(function(fileRef) {
-                    fileRef.getDownloadURL().then(function(url) {
-                        fileRef.getMetadata().then(function(metadata) {
-                            if (metadata.contentType.startsWith('video/')) {
-                                // Create video element with lazy loading
-                                const videoElement = document.createElement('video');
-                                videoElement.dataset.src = url; // Lazy load
-                                videoElement.controls = true;
-                                videoElement.classList.add('lazy'); // Add lazy class
-                                videosSection.appendChild(videoElement);
-                            }
-                        }).catch(function(error) {
-                            console.error("Error fetching metadata:", error);
-                        });
-                    }).catch(function(error) {
-                        console.error("Error getting download URL:", error);
-                    });
+    // Fetch and display videos from Firebase Storage
+    const storageRef = firebase.storage().ref('uploads/');
+    storageRef.listAll().then(function(result) {
+        hideLoadingSpinner();
+        result.items.forEach(function(fileRef) {
+            fileRef.getDownloadURL().then(function(url) {
+                console.log("Video URL: ", url);  // Logs the video URL
+                fileRef.getMetadata().then(function(metadata) {
+                    if (metadata.contentType.startsWith('video/')) {
+                        const videoElement = document.createElement('video');
+                        videoElement.src = url;  // Assign the download URL to the video
+                        videoElement.controls = true;
+                        videoElement.style.width = "300px";
+                        videosSection.appendChild(videoElement);
+                    }
+                }).catch(function(error) {
+                    console.error("Error fetching metadata:", error);
                 });
+            }).catch(function(error) {
+                console.error("Error getting download URL:", error);
+            });
+        });
+    }).catch(function(error) {
+        hideLoadingSpinner();
+        console.error("Error listing files:", error);
+    });
+}
 
                 // Trigger lazy loading once elements are added
                 lazyLoadVideos();
