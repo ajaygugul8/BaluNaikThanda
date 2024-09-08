@@ -77,39 +77,39 @@
 
         // Function to fetch and display images
         function displayImages() {
-            const picturesSection = document.getElementById('picturesSection');
-            showLoadingSpinner();
+    const picturesSection = document.getElementById('picturesSection');
+    showLoadingSpinner();
 
-            // Fetch and display images from Firebase Storage
-            const storageRef = firebase.storage().ref('uploads/');
-            storageRef.listAll().then(function(result) {
-                hideLoadingSpinner();
-                result.items.forEach(function(fileRef) {
-                    fileRef.getDownloadURL().then(function(url) {
-                        fileRef.getMetadata().then(function(metadata) {
-                            if (metadata.contentType.startsWith('image/')) {
-                                // Create image element with lazy loading
-                                const imgElement = document.createElement('img');
-                                imgElement.dataset.src = url; // Lazy load
-                                imgElement.alt = "Uploaded Image";
-                                imgElement.classList.add('lazy'); // Add lazy class
-                                picturesSection.appendChild(imgElement);
-                            }
-                        }).catch(function(error) {
-                            console.error("Error fetching metadata:", error);
-                        });
-                    }).catch(function(error) {
-                        console.error("Error getting download URL:", error);
-                    });
+    // Fetch and display images from Firebase Storage
+    const storageRef = firebase.storage().ref('uploads/');
+    storageRef.listAll().then(function(result) {
+        hideLoadingSpinner();
+        result.items.forEach(function(fileRef) {
+            fileRef.getDownloadURL().then(function(url) {
+                console.log("Image URL: ", url);  // Logs the image URL
+                fileRef.getMetadata().then(function(metadata) {
+                    if (metadata.contentType.startsWith('image/')) {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = url;  // Assign the download URL to the image
+                        imgElement.alt = "Uploaded Image";
+                        imgElement.classList.add('lazy');
+                        picturesSection.appendChild(imgElement);
+                    }
+                }).catch(function(error) {
+                    console.error("Error fetching metadata:", error);
                 });
-
-                // Trigger lazy loading once elements are added
-                lazyLoadImages();
             }).catch(function(error) {
-                hideLoadingSpinner();
-                console.error("Error listing files:", error);
+                console.error("Error getting download URL:", error);
             });
-        }
+        });
+
+        lazyLoadImages();  // Ensure lazy loading
+    }).catch(function(error) {
+        hideLoadingSpinner();
+        console.error("Error listing files:", error);
+    });
+}
+                
 
         // Lazy load images when they are close to being in the viewport
         function lazyLoadImages() {
