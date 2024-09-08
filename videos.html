@@ -77,39 +77,31 @@
 
         // Function to fetch and display videos
         function displayVideos() {
-    const videosSection = document.getElementById('videosSection');
-    showLoadingSpinner();
+            const videosSection = document.getElementById('videosSection');
+            showLoadingSpinner();
 
-    // Fetch and display videos from Firebase Storage
-    const storageRef = firebase.storage().ref('uploads/');
-    storageRef.listAll().then(function(result) {
-        hideLoadingSpinner();
-        result.items.forEach(function(fileRef) {
-            fileRef.getDownloadURL().then(function(url) {
-                console.log("Video URL: ", url);  // Logs the video URL
-                fileRef.getMetadata().then(function(metadata) {
-                    if (metadata.contentType.startsWith('video/')) {
-                        const videoElement = document.createElement('video');
-                        videoElement.src = url;  // Assign the download URL to the video
-                        videoElement.controls = true;
-                        videoElement.style.width = "300px";
-                        videosSection.appendChild(videoElement);
-                    }
-                }).catch(function(error) {
-                    console.error("Error fetching metadata:", error);
+            // Fetch and display videos from Firebase Storage
+            const storageRef = firebase.storage().ref('uploads/');
+            storageRef.listAll().then(function(result) {
+                hideLoadingSpinner();
+                result.items.forEach(function(fileRef) {
+                    fileRef.getDownloadURL().then(function(url) {
+                        console.log("Video URL: ", url);  // Logs the video URL
+                        fileRef.getMetadata().then(function(metadata) {
+                            if (metadata.contentType.startsWith('video/')) {
+                                const videoElement = document.createElement('video');
+                                videoElement.src = url;  // Assign the download URL to the video
+                                videoElement.controls = true;
+                                videoElement.classList.add('lazy');  // Add lazy class for lazy loading
+                                videosSection.appendChild(videoElement);
+                            }
+                        }).catch(function(error) {
+                            console.error("Error fetching metadata:", error);
+                        });
+                    }).catch(function(error) {
+                        console.error("Error getting download URL:", error);
+                    });
                 });
-            }).catch(function(error) {
-                console.error("Error getting download URL:", error);
-            });
-        });
-    }).catch(function(error) {
-        hideLoadingSpinner();
-        console.error("Error listing files:", error);
-    });  // Correct closing for listAll().then()
-}  // Correct closing for displayVideos() function
-
-// Ensure you load the function when the page loads
-
 
                 // Trigger lazy loading once elements are added
                 lazyLoadVideos();
@@ -144,7 +136,7 @@
 </head>
 <body>
     <h2>Uploaded Videos</h2>
-    <div id="loadingSpinner" class="spinner"></div>
+    <div id="loadingSpinner" class="spinner hidden"></div>
     <div id="videosSection"></div>
 </body>
 </html>
