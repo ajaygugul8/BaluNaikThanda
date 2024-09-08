@@ -105,8 +105,11 @@
     }).catch(function(error) {
         hideLoadingSpinner();
         console.error("Error listing files:", error);
-    });
-}
+    });  // Correct closing for listAll().then()
+}  // Correct closing for displayVideos() function
+
+// Ensure you load the function when the page loads
+
 
                 // Trigger lazy loading once elements are added
                 lazyLoadVideos();
