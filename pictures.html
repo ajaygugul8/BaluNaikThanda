@@ -8,6 +8,46 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <!-- Firebase Storage -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <style>
+        /* Pictures section styling */
+        #picturesSection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        img {
+            width: 150px;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        /* Loading spinner styles */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden until content is loaded */
+        .hidden {
+            display: none;
+        }
+    </style>
     <script>
         // Firebase configuration
         const firebaseConfig = {
@@ -22,45 +62,81 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+
+        // Function to show a loading spinner
+        function showLoadingSpinner() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.remove('hidden');
+        }
+
+        // Function to hide the loading spinner
+        function hideLoadingSpinner() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('hidden');
+        }
+
+        // Function to fetch and display images
+        function displayImages() {
+            const picturesSection = document.getElementById('picturesSection');
+            showLoadingSpinner();
+
+            // Fetch and display images from Firebase Storage
+            const storageRef = firebase.storage().ref('uploads/');
+            storageRef.listAll().then(function(result) {
+                hideLoadingSpinner();
+                result.items.forEach(function(fileRef) {
+                    fileRef.getDownloadURL().then(function(url) {
+                        fileRef.getMetadata().then(function(metadata) {
+                            if (metadata.contentType.startsWith('image/')) {
+                                // Create image element with lazy loading
+                                const imgElement = document.createElement('img');
+                                imgElement.dataset.src = url; // Lazy load
+                                imgElement.alt = "Uploaded Image";
+                                imgElement.classList.add('lazy'); // Add lazy class
+                                picturesSection.appendChild(imgElement);
+                            }
+                        }).catch(function(error) {
+                            console.error("Error fetching metadata:", error);
+                        });
+                    }).catch(function(error) {
+                        console.error("Error getting download URL:", error);
+                    });
+                });
+
+                // Trigger lazy loading once elements are added
+                lazyLoadImages();
+            }).catch(function(error) {
+                hideLoadingSpinner();
+                console.error("Error listing files:", error);
+            });
+        }
+
+        // Lazy load images when they are close to being in the viewport
+        function lazyLoadImages() {
+            const lazyImages = document.querySelectorAll('.lazy');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        observer.unobserve(img);
+                    }
+                });
+            }, { rootMargin: '0px 0px 200px 0px' });
+
+            lazyImages.forEach(img => {
+                observer.observe(img);
+            });
+        }
+
+        // Load images when the page is fully loaded
+        window.onload = displayImages;
     </script>
 </head>
 <body>
     <h2>Uploaded Pictures</h2>
+    <div id="loadingSpinner" class="spinner"></div>
     <div id="picturesSection"></div>
-
-    <script>
-        window.onload = function() {
-            const picturesSection = document.getElementById('picturesSection');
-            console.log("Fetching pictures from Firebase...");
-
-            // Fetch and display pictures from Firebase Storage
-            const storageRef = firebase.storage().ref('uploads/');
-            storageRef.listAll().then(function(result) {
-                result.items.forEach(function(fileRef) {
-                    fileRef.getDownloadURL().then(function(url) {
-                        fileRef.getMetadata().then(function(metadata) {
-                            console.log("File found:", metadata.contentType);
-
-                            if (metadata.contentType.startsWith('image/')) {
-                                console.log("Displaying image:", url);
-
-                                const imgElement = document.createElement('img');
-                                imgElement.src = url;
-                                imgElement.alt = "Uploaded Image";
-                                imgElement.style.width = "150px"; // Adjust size as needed
-                                picturesSection.appendChild(imgElement);
-                            }
-                        }).catch(function(error) {
-                            console.error("Error fetching metadata:", error);  // Log any metadata errors
-                        });
-                    }).catch(function(error) {
-                        console.error("Error getting download URL:", error);  // Log any URL errors
-                    });
-                });
-            }).catch(function(error) {
-                console.error("Error listing files:", error);  // Log any listAll errors
-            });
-        };
-    </script>
 </body>
 </html>
