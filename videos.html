@@ -8,6 +8,46 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <!-- Firebase Storage -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <style>
+        /* Video section styling */
+        #videosSection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        /* Loading spinner styles */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hidden until content is loaded */
+        .hidden {
+            display: none;
+        }
+    </style>
     <script>
         // Firebase configuration
         const firebaseConfig = {
@@ -22,50 +62,81 @@
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-    </script>
-</head>
-<body>
-    <h2>Uploaded Videos</h2>
-    <div id="videosSection"></div>
 
-    <script>
+        // Function to display a loading spinner
+        function showLoadingSpinner() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.remove('hidden');
+        }
+
+        // Function to hide the loading spinner
+        function hideLoadingSpinner() {
+            const spinner = document.getElementById('loadingSpinner');
+            spinner.classList.add('hidden');
+        }
+
         // Function to fetch and display videos
         function displayVideos() {
             const videosSection = document.getElementById('videosSection');
-            console.log("Fetching videos from Firebase...");
+            showLoadingSpinner();
 
             // Fetch and display videos from Firebase Storage
             const storageRef = firebase.storage().ref('uploads/');
             storageRef.listAll().then(function(result) {
+                hideLoadingSpinner();
                 result.items.forEach(function(fileRef) {
                     fileRef.getDownloadURL().then(function(url) {
                         fileRef.getMetadata().then(function(metadata) {
-                            console.log("File found:", metadata.contentType);
-
                             if (metadata.contentType.startsWith('video/')) {
-                                console.log("Displaying video:", url);
-
+                                // Create video element with lazy loading
                                 const videoElement = document.createElement('video');
-                                videoElement.src = url;
-                                videoElement.controls = true; // Add video controls
-                                videoElement.style.width = "300px"; // Adjust size as needed
-                                videoElement.style.marginBottom = "10px"; // Add space between videos
+                                videoElement.dataset.src = url; // Lazy load
+                                videoElement.controls = true;
+                                videoElement.classList.add('lazy'); // Add lazy class
                                 videosSection.appendChild(videoElement);
                             }
                         }).catch(function(error) {
-                            console.error("Error fetching metadata:", error);  // Log any metadata errors
+                            console.error("Error fetching metadata:", error);
                         });
                     }).catch(function(error) {
-                        console.error("Error getting download URL:", error);  // Log any URL errors
+                        console.error("Error getting download URL:", error);
                     });
                 });
+
+                // Trigger lazy loading once elements are added
+                lazyLoadVideos();
             }).catch(function(error) {
-                console.error("Error listing files:", error);  // Log any listAll errors
+                hideLoadingSpinner();
+                console.error("Error listing files:", error);
+            });
+        }
+
+        // Lazy load videos when they are close to being in the viewport
+        function lazyLoadVideos() {
+            const lazyVideos = document.querySelectorAll('.lazy');
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const video = entry.target;
+                        video.src = video.dataset.src;
+                        video.classList.remove('lazy');
+                        observer.unobserve(video);
+                    }
+                });
+            }, { rootMargin: '0px 0px 200px 0px' });
+
+            lazyVideos.forEach(video => {
+                observer.observe(video);
             });
         }
 
         // Load videos when the page is fully loaded
         window.onload = displayVideos;
     </script>
+</head>
+<body>
+    <h2>Uploaded Videos</h2>
+    <div id="loadingSpinner" class="spinner"></div>
+    <div id="videosSection"></div>
 </body>
 </html>
