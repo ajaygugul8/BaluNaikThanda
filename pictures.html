@@ -89,9 +89,8 @@
                         fileRef.getMetadata().then(function(metadata) {
                             if (metadata.contentType.startsWith('image/')) {
                                 const imgElement = document.createElement('img');
-                                imgElement.dataset.src = url;  // Set data-src for lazy loading
+                                imgElement.src = url;  // Set the image source directly
                                 imgElement.alt = "Uploaded Image";
-                                imgElement.classList.add('lazy');
                                 picturesSection.appendChild(imgElement);
                             }
                         }).catch(function(error) {
@@ -101,31 +100,9 @@
                         console.error("Error getting download URL:", error);
                     });
                 });
-
-                // Lazy load the images after they've been appended
-                lazyLoadImages();
             }).catch(function(error) {
                 hideLoadingSpinner();
                 console.error("Error listing files:", error);
-            });
-        }
-
-        // Lazy load images when they are close to being in the viewport
-        function lazyLoadImages() {
-            const lazyImages = document.querySelectorAll('.lazy');
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;  // Set the actual image source
-                        img.classList.remove('lazy');
-                        observer.unobserve(img);
-                    }
-                });
-            }, { rootMargin: '0px 0px 200px 0px' });
-
-            lazyImages.forEach(img => {
-                observer.observe(img);
             });
         }
 
