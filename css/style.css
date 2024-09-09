@@ -316,6 +316,17 @@ body a {
     object-fit: cover; /* Ensures the video fills the container */
     border: none;
 }
+.floating-link {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease-in-out;
+}
+
+.floating-link:hover {
+  transform: translateY(-5px);
+  color: #007bff; /* Optional: to change link color on hover */
+}
+
 /* Upload Section Styling */
 .upload-section {
     text-align: center;
