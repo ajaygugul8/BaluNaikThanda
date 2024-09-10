@@ -4,15 +4,12 @@
 <head>
 <title>గ్రామం, బాలు నాయక్ తాండ | Home</title>
 	
-<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  window.OneSignal = window.OneSignal || [];
-  OneSignal.push(function() {
-    OneSignal.init({
-      appId: "8ac43bc0-7f9d-4211-b6cc-70eda26c344a",  // Your updated App ID
-      notifyButton: {
-        enable: true,  // Optional: Enable the subscription bell
-      }
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "96b802d3-af7f-4906-896d-b5c78706d5b2",
     });
   });
 </script>	
